@@ -1,52 +1,61 @@
-const stone = 0;
-const scissors = 1;
-const paper = 2;
-let player = 0;
-let computer = 0;
-function getChoiceComputer(){
-    let randomComputerSelect = Math.floor(Math.random()*3)
-    if(randomComputerSelect === 0){
-        return stone;
-    } else if(randomComputerSelect === 1){
-        return scissors;
-    } else if(randomComputerSelect === 2){
-        return paper;
-    } 
-}
-getChoiceComputer();
-let letChoicePlayer = prompt('Выберите "Камень", "Ножницы", "Бумага"');
-function getPlayerChoice(){
-    if(letChoicePlayer === "Камень"){
-        return stone;
-    } else if(letChoicePlayer === "Ножницы"){
-        return scissors;
-    }else if(letChoicePlayer === "Бумага"){
-        return paper;
-    } else if (letChoicePlayer != "Камень","Ножницы","Бумага"){
-       return alert("Вы дали неправильный ответ")  
-    } 
-}
-getPlayerChoice()
-function getGameScore(){
-    computerSelect = getChoiceComputer();
-    playerSelect = getPlayerChoice();
-    if(playerSelect === stone && computerSelect === scissors || playerSelect === scissors && computerSelect === paper || palyerSelector === paper && computerSelect === stone){
-         player++;
-    } else if (playerSelect === scissors && computerSelect === stone || playerSelect === paper && computerSelect === scissors || palyerSelect === stone && computerSelect === paper){
-         computer++;
-    } return true;
-    } 
-getGameScore();
-function getGameResult(){
-    if(player === computer){
-        alert("Ничья")
-    } else if(player > computer){
-        alert("Вы выйграли")
-    }else if(player < computer){
-        alert("Вы проиграли")
+const choices = ['rock', 'paper', 'scissors'];
+const playerDisplay = document.getElementById('playerDisplay');
+const computerDisplay = document.getElementById('computerDisplay');
+const resultDisplay = document.getElementById('resultDisplay');
+const playerScoreDisplay = document.getElementById('playerScoreDisplay');
+const computerScoreDisplay = document.getElementById('computerScoreDisplay');
+const allRoundsDisplay = document.getElementById('allRounds')
+
+let playerScore = 0;
+let computerScore = 0;
+let allRounds = 0;
+
+const playGame = (playerChoice) =>{
+    const computerChoice = choices[Math.floor(Math.random() * 3)];
+    let result = '';
+
+    if(playerChoice === computerChoice){
+        result = "IT'S A TIE!";
     }
+    else{
+        switch (playerChoice) {
+            case 'rock': {
+               result = (computerChoice === 'scissors') ? "YOU WIN!" : "YOU LOSE!";
+            };
+            break;
+            case 'paper': {
+                result = (computerChoice === 'rock') ? "YOU WIN!" : "YOU LOSE!";
+            };
+            break;
+            case 'scissors': {
+                result = (computerChoice === 'paper') ? "YOU WIN!" : "YOU LOSE!";
+            };
+            break;
+        }
+    }
+    
+    playerDisplay.textContent = `PLAYER: "${playerChoice}"`;
+    computerDisplay.textContent = `COMPUTER: "${computerChoice}"`;
+    resultDisplay.textContent = result;
+
+    resultDisplay.classList.remove('greenText', 'redText');
+
+    switch (result) {
+        case "YOU WIN!": {
+            resultDisplay.classList.add('greenText');
+            playerScore++;
+            playerScoreDisplay.textContent = playerScore;
+        }
+        break;
+        case "YOU LOSE!": {
+            resultDisplay.classList.add('redText');
+            computerScore++;
+            computerScoreDisplay.textContent = computerScore;
+    }
+        break;
+    }
+    
+    (result === 'YOU WIN!' || result === 'YOU LOSE!' || result === "IT'S A TIE!") ? allRounds++ : null;
+    allRoundsDisplay.textContent = allRounds;
+
 }
-getGameResult();
-console.log("Что выбрал компьютер",getChoiceComputer());
-console.log("Счет компьютера", computer);
-console.log("Счет игрока", player);
